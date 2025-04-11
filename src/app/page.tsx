@@ -133,71 +133,72 @@ export default function Home() {
               AI 기반 뉴스 분석으로 핵심 내용만 빠르게 파악하세요. 다양한 소스를
               통합하여 종합적인 요약을 제공합니다.
             </p>
-          </div>
-
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden mb-8">
-            <SearchBox onSearch={handleSearch} isLoading={isLoading} />
-          </div>
-
-          {error && (
-            <div className="bg-red-50 dark:bg-red-900/20 text-red-800 dark:text-red-200 p-4 mb-6 rounded-lg shadow-sm border border-red-200 dark:border-red-800/30 flex items-start justify-center">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5 mr-2 mt-0.5 flex-shrink-0"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
+            {!showIntro && (
+              <button
+                onClick={() => setShowIntro(true)}
+                className="mt-2 text-blue-600 dark:text-blue-400 hover:underline text-sm flex items-center mx-auto"
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                />
-              </svg>
-              <span>{error}</span>
-            </div>
-          )}
-
-          {isLoading && (
-            <div className="flex flex-col justify-center items-center p-8 sm:p-10 bg-white dark:bg-gray-800 rounded-xl shadow-lg text-center">
-              <div className="animate-spin rounded-full h-14 w-14 border-t-2 border-b-2 border-blue-500 mb-4"></div>
-              <h3 className="text-lg sm:text-xl font-semibold text-gray-800 dark:text-white mb-2">
-                뉴스 검색 중...
-              </h3>
-              <p className="text-sm sm:text-base text-gray-600 dark:text-gray-300 text-center mb-3">
-                &quot;{searchQuery}&quot;에 대한 정보를 찾고 있습니다
-              </p>
-              <div className="w-full max-w-md bg-gray-200 dark:bg-gray-700 rounded-full h-2 mt-2">
-                <div className="bg-blue-600 h-2 rounded-full animate-pulse"></div>
-              </div>
-              <p className="text-xs sm:text-sm text-amber-600 dark:text-amber-400 text-center mt-4">
-                선택한 뉴스 수와 검색 기간에 따라 처리 시간이 달라질 수
-                있습니다.
-              </p>
-            </div>
-          )}
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-4 w-4 mr-1"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
+                </svg>
+                서비스 안내 보기
+              </button>
+            )}
+          </div>
 
           {!isLoading && !results && showIntro && (
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden mb-8">
               <div className="border-b border-gray-200 dark:border-gray-700 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 p-6">
-                <h2 className="text-xl sm:text-2xl font-bold mb-1 text-gray-800 dark:text-white flex items-center">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-6 w-6 mr-2 text-blue-600 dark:text-blue-400"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
+                <div className="flex justify-between items-center">
+                  <h2 className="text-xl sm:text-2xl font-bold mb-1 text-gray-800 dark:text-white flex items-center">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-6 w-6 mr-2 text-blue-600 dark:text-blue-400"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                      />
+                    </svg>
+                    DeepNews 서비스 안내
+                  </h2>
+                  <button
+                    onClick={() => setShowIntro(false)}
+                    className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors"
+                    title="안내 접어두기"
                   >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                    />
-                  </svg>
-                  DeepNews 서비스 안내
-                </h2>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-5 w-5"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M6 18L18 6M6 6l12 12"
+                      />
+                    </svg>
+                  </button>
+                </div>
                 <p className="text-sm text-gray-600 dark:text-gray-300">
                   다양한 뉴스를 하나로 모아 핵심만 빠르게 파악하는 AI 통합 요약
                   서비스
@@ -253,7 +254,7 @@ export default function Home() {
                           strokeLinecap="round"
                           strokeLinejoin="round"
                           strokeWidth={2}
-                          d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"
+                          d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
                         />
                       </svg>
                     </div>
@@ -261,75 +262,66 @@ export default function Home() {
                       사용 방법
                     </h3>
                   </div>
-                  <ol className="list-decimal pl-10 space-y-2 text-gray-600 dark:text-gray-300">
-                    <li>검색창에 관심 있는 주제나 키워드를 입력하세요.</li>
-                    <li>
-                      검색하고자 하는 국가를 선택하세요 (한국, 미국 또는 모든
-                      국가).
-                    </li>
-                    <li>검색 기간과 원하는 뉴스 수를 설정하세요.</li>
-                    <li>
-                      &quot;검색&quot; 버튼을 클릭하면 AI가 관련 뉴스를 검색하고
-                      분석합니다.
-                    </li>
-                  </ol>
-                </div>
-
-                <div>
-                  <div className="flex items-center mb-3">
-                    <div className="bg-blue-100 dark:bg-blue-900/30 rounded-full p-2 mr-3">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-5 w-5 text-blue-600 dark:text-blue-400"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                        />
-                      </svg>
-                    </div>
-                    <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200">
-                      유의사항
-                    </h3>
-                  </div>
-                  <ul className="list-disc pl-10 space-y-2 text-gray-600 dark:text-gray-300">
-                    <li>
-                      검색 결과는 AI가 생성한 내용으로, 정확성을 보장하지
-                      않습니다.
-                    </li>
-                    <li>
-                      국가별 검색 기능을 활용하면 특정 지역의 뉴스에 집중할 수
-                      있습니다.
-                    </li>
-                    <li>
-                      복잡한 주제일수록 검색 결과 생성에 시간이 더 소요될 수
-                      있습니다.
-                    </li>
-                  </ul>
-                </div>
-
-                <div className="mt-8 flex justify-center">
-                  <button
-                    onClick={() => setShowIntro(false)}
-                    className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors shadow-sm"
-                  >
-                    시작하기
-                  </button>
+                  <p className="text-gray-600 dark:text-gray-300 mb-3 pl-10">
+                    1. 검색창에 원하는 키워드를 입력하세요. (예: 인공지능, 경제,
+                    기후변화)
+                  </p>
+                  <p className="text-gray-600 dark:text-gray-300 mb-3 pl-10">
+                    2. 국가, 기간, 뉴스 수를 선택하여 검색 범위를 설정하세요.
+                  </p>
+                  <p className="text-gray-600 dark:text-gray-300 pl-10">
+                    3. 검색 버튼을 클릭하면 AI가 분석한 뉴스 요약 보고서를
+                    제공받을 수 있습니다.
+                  </p>
                 </div>
               </div>
             </div>
           )}
 
-          {results && (
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
-              <SearchResults results={results} />
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden mb-8">
+            <SearchBox onSearch={handleSearch} isLoading={isLoading} />
+          </div>
+
+          {error && (
+            <div className="bg-red-50 dark:bg-red-900/20 text-red-800 dark:text-red-200 p-4 mb-6 rounded-lg shadow-sm border border-red-200 dark:border-red-800/30 flex items-start justify-center">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-5 w-5 mr-2 mt-0.5 flex-shrink-0"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
+              <span>{error}</span>
             </div>
           )}
+
+          {isLoading && (
+            <div className="flex flex-col justify-center items-center p-8 sm:p-10 bg-white dark:bg-gray-800 rounded-xl shadow-lg text-center">
+              <div className="animate-spin rounded-full h-14 w-14 border-t-2 border-b-2 border-blue-500 mb-4"></div>
+              <h3 className="text-lg sm:text-xl font-semibold text-gray-800 dark:text-white mb-2">
+                뉴스 검색 중...
+              </h3>
+              <p className="text-sm sm:text-base text-gray-600 dark:text-gray-300 text-center mb-3">
+                &quot;{searchQuery}&quot;에 대한 정보를 찾고 있습니다
+              </p>
+              <div className="w-full max-w-md bg-gray-200 dark:bg-gray-700 rounded-full h-2 mt-2">
+                <div className="bg-blue-600 h-2 rounded-full animate-pulse"></div>
+              </div>
+              <p className="text-xs sm:text-sm text-amber-600 dark:text-amber-400 text-center mt-4">
+                선택한 뉴스 수와 검색 기간에 따라 처리 시간이 달라질 수
+                있습니다.
+              </p>
+            </div>
+          )}
+
+          {results && !isLoading && <SearchResults results={results} />}
         </div>
       </main>
 

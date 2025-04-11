@@ -12,7 +12,7 @@ export default function Home() {
   const [results, setResults] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState<string>("");
-  const [showIntro, setShowIntro] = useState(true);
+  const [showIntro, setShowIntro] = useState(false);
 
   const handleSearch = async (
     query: string,

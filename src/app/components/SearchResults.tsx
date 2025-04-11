@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-import { TableOfContents } from "./TableOfContents";
 
 interface SearchResultsProps {
   results: string;
@@ -106,16 +105,16 @@ export const SearchResults: React.FC<SearchResultsProps> = ({ results }) => {
         /### 핵심 내용 요약([\s\S]*?)(?=###|$)/
       );
       const trendSection = content.match(
-        /### 전반적인 트렌드 분석([\s\S]*?)(?=###|$)/
+        /### 전반적인 분석([\s\S]*?)(?=###|$)/
       );
 
       formattedContent = formattedContent
         // 대제목 (h2) 처리
         .replace(/^## ✅ (.*)$/gm, (match, title) => {
           const id = extractId(match);
-          return `<h2 ${
+          return `<h1 ${
             id ? `id="${id}"` : ""
-          } class="text-xl sm:text-2xl font-bold text-blue-700 dark:text-blue-400 mt-6 sm:mt-8 mb-3 sm:mb-4 pb-2 sm:pb-3 border-b border-gray-200 dark:border-gray-700">${title}</h2>`;
+          } class="text-xl sm:text-2xl font-bold text-blue-700 dark:text-blue-400 mt-6 sm:mt-8 mb-3 sm:mb-4 pb-2 sm:pb-3 border-b border-gray-200 dark:border-gray-700">${title}</h1>`;
         })
 
         // H3 섹션 처리 - 주요 섹션 헤더에 특별한 스타일 적용
@@ -145,7 +144,7 @@ export const SearchResults: React.FC<SearchResultsProps> = ({ results }) => {
                 </span>
                 ${title}
               </h3>`;
-          } else if (title.includes("전반적인 트렌드 분석")) {
+          } else if (title.includes("전반적인 분석")) {
             return `<h3 ${
               id ? `id="${id}"` : ""
             } class="text-lg sm:text-xl font-bold text-gray-800 dark:text-gray-200 mt-6 sm:mt-8 mb-3 sm:mb-4 flex items-center">
@@ -216,7 +215,7 @@ export const SearchResults: React.FC<SearchResultsProps> = ({ results }) => {
 
         // 트렌드 분석 섹션 전체를 감싸는 컨테이너 추가
         .replace(
-          /<h3([^>]*)>([^<]*전반적인 트렌드 분석[^<]*)<\/h3>([\s\S]*?)(?=<h3|$)/g,
+          /<h3([^>]*)>([^<]*전반적인 분석[^<]*)<\/h3>([\s\S]*?)(?=<h3|$)/g,
           (match, attrs, title, content) => {
             // ID 태그만 있는 줄 제거 (더 강력한 패턴)
             let processedContent = content
@@ -228,7 +227,7 @@ export const SearchResults: React.FC<SearchResultsProps> = ({ results }) => {
             if (trendSection) {
               // ID 및 불필요한 태그 제거 후 단락으로 분리
               const cleanContent = trendSection[0]
-                .replace(/### 전반적인 트렌드 분석[\s\n]*/g, "")
+                .replace(/### 전반적인 분석[\s\n]*/g, "")
                 .replace(/→\s*id="[^"]*"[\s\n]*/g, "")
                 .replace(/\(id="[^"]*"\)[\s\n]*/g, "")
                 .trim();
@@ -340,7 +339,7 @@ export const SearchResults: React.FC<SearchResultsProps> = ({ results }) => {
     // 링크 처리 (모든 형식의 보고서에 공통 적용)
     formattedContent = formattedContent.replace(
       /\[(.*?)\]\((.*?)\)/g,
-      '<a href="$2" class="text-blue-600 dark:text-blue-400 hover:underline transition-colors" target="_blank" rel="noopener noreferrer">$1</a>'
+      '<a href="$2" class="text-blue-600 dark:text-blue-400 hover:underline transition-colors"  target="_blank" rel="noopener noreferrer">$1</a>'
     );
 
     return formattedContent;
@@ -354,12 +353,10 @@ export const SearchResults: React.FC<SearchResultsProps> = ({ results }) => {
     const htmlContent = formatContent(results);
 
     return (
-      <div className="space-y-6">
-        <TableOfContents results={results} />
-
+      <div className="space-y-6 text-justify">
         <div className="bg-white dark:bg-gray-800 shadow-lg rounded-xl p-8 overflow-auto print:shadow-none transition-all duration-200 hover:shadow-xl border border-gray-100 dark:border-gray-700">
           <div
-            className="prose dark:prose-invert max-w-none prose-headings:font-display prose-p:leading-relaxed prose-p:text-justify"
+            className="prose dark:prose-invert max-w-none prose-headings:font-display prose-p:leading-relaxed prose-p:text-justify text-justify"
             dangerouslySetInnerHTML={{ __html: htmlContent }}
           />
         </div>
@@ -368,7 +365,7 @@ export const SearchResults: React.FC<SearchResultsProps> = ({ results }) => {
   }
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4 sm:p-6 mb-3 sm:mb-6">
+    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4 sm:p-6 mb-3 sm:mb-6 text-justify">
       <div className="prose prose-blue dark:prose-invert prose-sm sm:prose-base max-w-none">
         <div
           className="text-gray-800 dark:text-gray-200 text-sm sm:text-base"

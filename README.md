@@ -109,29 +109,3 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
 
 
-다음 키워드와 관련된 최근 뉴스를 조사하고 주요 내용을 요약해주세요: {query}
-        
-그라운딩 검색(Google Search)을 사용하여 해당 키워드에 대한 최신 뉴스와 정보를 검색해주세요.
-{languageInstruction}
-검색 결과는 최대한 {currentDate} 날짜 기준 일주일 이내의 정보를 기준으로 정리해주세요.
-반드시 존재하는 뉴스 최소 10개 이상을 찾아서 정리해주세요.
-
-## ✅ [{query} - 관련 최신 뉴스 요약] → id=\"report-title\"
-
-### 주요 뉴스 헤드라인
-1. [첫 번째 주요 헤드라인] → id=\"headline-1\" 
-2. [두 번째 주요 헤드라인] → id=\"headline-2\"
-3. [세 번째 주요 헤드라인] → id=\"headline-3\"
-4. [넷 번째 주요 헤드라인] → id=\"headline-4\"
-5. [다섯 번째 주요 헤드라인] → id=\"headline-5\"
-
-### 핵심 내용 요약
-* **[첫 번째 주요 헤드라인 내용]** [150자 이내 요약] → id=\"summary-1\"
-* **[두 번째 주요 헤드라인 내용]** [150자 이내 요약] → id=\"summary-2\"
-* **[세 번째 주요 헤드라인 내용]** [150자 이내 요약] → id=\"summary-3\"
-* **[넷 번째 주요 헤드라인 내용]** [150자 이내 요약] → id=\"summary-4\"
-* **[다섯 번째 주요 헤드라인 내용]** [150자 이내 요약] → id=\"summary-5\"
-
-### 전반적인 트렌드 분석
-* [{query}와 관련된 전반적인 트렌드를 500자 이내로 분석 후 *로 문단 구분하여 정리] → id=\"trend-analysis\"
-

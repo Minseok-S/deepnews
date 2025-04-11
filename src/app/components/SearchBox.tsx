@@ -93,7 +93,6 @@ export const SearchBox: React.FC<SearchBoxProps> = ({
             <CountryButton country="all" label="모든 국가" />
             <CountryButton country="kr" label="한국" />
             <CountryButton country="us" label="미국" />
-            <CountryButton country="cn" label="중국" />
           </div>
         </div>
 

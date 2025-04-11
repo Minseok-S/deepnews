@@ -53,7 +53,6 @@ export default function Home() {
         const languageMap: Record<string, string> = {
           kr: '한국어로 "{query}"를 검색하여 한국 내 정보만 찾아주세요.',
           us: '영어로 "{query}"를 검색하여 미국 내 정보만 찾아주세요.',
-          cn: '중국어로 "{query}"를 검색하여 중국 내 정보만 찾아주세요.',
         };
 
         const languageInstructions = countries
@@ -149,7 +148,7 @@ export default function Home() {
                 <ol className="list-decimal pl-5 space-y-2 text-gray-600 dark:text-gray-300">
                   <li>검색창에 관심 있는 주제나 키워드를 입력하세요.</li>
                   <li>
-                    검색하고자 하는 국가를 선택하세요 (한국, 미국, 중국 또는
+                    검색하고자 하는 국가를 선택하세요 (한국, 미국 또는
                     모든 국가).
                   </li>
                   <li>

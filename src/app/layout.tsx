@@ -1,3 +1,4 @@
+import { Analytics } from "@vercel/analytics/react";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
@@ -58,15 +59,25 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ko">
-      <head>
-        <meta name="google-adsense-account" content="ca-pub-4923560171218864" />
-      </head>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gray-50 dark:bg-gray-900`}
-      >
-        {children}
-      </body>
-    </html>
+    <>
+      <html lang="ko">
+        <head>
+          <meta
+            name="google-adsense-account"
+            content="ca-pub-4923560171218864"
+          />
+          <meta
+            name="google-site-verification"
+            content="tW-owcSeSqto-tKT9N_hvSrU1N_uqejvc4fbTP0sAJ8"
+          />
+        </head>
+        <body
+          className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gray-50 dark:bg-gray-900`}
+        >
+          {children}
+        </body>
+      </html>
+      <Analytics />
+    </>
   );
 }

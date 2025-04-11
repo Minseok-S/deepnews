@@ -19,7 +19,17 @@ export const SearchResults: React.FC<SearchResultsProps> = ({ results }) => {
         text.match(/ id="([^"]*)"/) ||
         text.match(/ →\s*id="([^"]*)"/) ||
         text.match(/ →\s*id='([^']*)'/) ||
-        text.match(/ →\s*id=([^ ]*)/);
+        text.match(/ →\s*id=([^ ]*)/) ||
+        text.match(/→ id="([^"]*)"$/) ||
+        text.match(/→id="([^"]*)"$/) ||
+        text.match(/→ id="([^"]*)"/) ||
+        text.match(/→id="([^"]*)"/) ||
+        text.match(/→ id='([^']*)'/) ||
+        text.match(/→id='([^']*)'/) ||
+        text.match(/→ id=([^ ]*)/) ||
+        text.match(/→id=([^ ]*)/) ||
+        text.match(/→ id="([^"]*)"$/) ||
+        text.match(/→id="([^"]*)"$/);
       return idMatch ? idMatch[1] : "";
     };
 
@@ -33,7 +43,11 @@ export const SearchResults: React.FC<SearchResultsProps> = ({ results }) => {
           if (
             line.includes("id=") ||
             line.includes("→") ||
-            line.includes("(id")
+            line.includes("(id") ||
+            line.match(/ → id="[^"]*"$/) ||
+            line.match(/→ id="[^"]*"$/) ||
+            line.match(/ →id="[^"]*"$/) ||
+            line.match(/→id="[^"]*"$/)
           ) {
             // 모든 ID 패턴 제거
             return line
@@ -142,17 +156,6 @@ export const SearchResults: React.FC<SearchResultsProps> = ({ results }) => {
                 </span>
                 ${title}
               </h3>`;
-          } else if (title.includes("참고 링크")) {
-            return `<h3 ${
-              id ? `id="${id}"` : ""
-            } class="text-lg sm:text-xl font-bold text-gray-800 dark:text-gray-200 mt-6 sm:mt-8 mb-3 sm:mb-4 flex items-center">
-                <span class="mr-2 text-blue-600 dark:text-blue-400">
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 sm:w-6 sm:h-6">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M13.19 8.688a4.5 4.5 0 0 1 1.242 7.244l-4.5 4.5a4.5 4.5 0 0 1-6.364-6.364l1.757-1.757m13.35-.622 1.757-1.757a4.5 4.5 0 0 0-6.364-6.364l-4.5 4.5a4.5 4.5 0 0 0 1.242 7.244" />
-                  </svg>
-                </span>
-                ${title}
-              </h3>`;
           }
           // 기본 H3 스타일
           return `<h3 ${
@@ -193,64 +196,22 @@ export const SearchResults: React.FC<SearchResultsProps> = ({ results }) => {
                 <span class="block pl-1">${content}</span>
               </div>`;
           }
+          // trend-analysis ID를 가진 경우 트렌드 분석 스타일 적용
+          if (
+            id === "trend-analysis" ||
+            (match.includes("→") && match.includes("trend-analysis"))
+          ) {
+            return `<div id="trend-analysis" class="mb-4 p-4 border-l-4 border-blue-500 dark:border-blue-600 bg-blue-50 dark:bg-blue-900/20 rounded-r-lg">
+                <span class="font-bold text-blue-700 dark:text-blue-400 block mb-1">${label}:</span>
+                <span class="block pl-1">${content}</span>
+              </div>`;
+          }
           // 기본 강조 블록
           return `<div ${
             id ? `id="${id}"` : ""
           } class="mb-3 bg-gray-50 dark:bg-gray-900/50 p-3 rounded">
               <span class="font-bold text-blue-700 dark:text-blue-400">${label}:</span> ${content}
             </div>`;
-        })
-
-        // 트렌드 분석 섹션 특별 처리
-        .replace(/^(최근 일주일간.*?)$/gm, (match, content) => {
-          const id = extractId(match);
-          if (trendSection && trendSection[0].includes(match)) {
-            return `<div ${
-              id ? `id="${id}"` : ""
-            } class="p-4 border-l-4 border-blue-500 dark:border-blue-600 bg-blue-50 dark:bg-blue-900/20 rounded-r-lg my-4">
-                <p class="text-gray-700 dark:text-gray-300 leading-relaxed text-justify">${content}</p>
-              </div>`;
-          }
-          return `<p class="mb-3">${content}</p>`;
-        })
-
-        // 트렌드 분석에 대한 단락 처리 개선
-        .replace(/^(최근 미국 관세 정책은.*?)$/gm, (match, content) => {
-          const id = extractId(match);
-          if (trendSection && trendSection[0].includes(match)) {
-            return `<div ${
-              id ? `id="${id}"` : ""
-            } class="p-4 border-l-4 border-blue-500 dark:border-blue-600 bg-blue-50 dark:bg-blue-900/20 rounded-r-lg my-4">
-                <p class="text-gray-700 dark:text-gray-300 leading-relaxed text-justify">${content}</p>
-              </div>`;
-          }
-          return `<p class="mb-3">${content}</p>`;
-        })
-
-        // 트렌드 분석 단락들을 구조화
-        .replace(/^(반면, 중국을 제외한.*?)$/gm, (match, content) => {
-          const id = extractId(match);
-          if (trendSection && trendSection[0].includes(match)) {
-            return `<div ${
-              id ? `id="${id}"` : ""
-            } class="p-4 border-l-4 border-green-500 dark:border-green-600 bg-green-50 dark:bg-green-900/20 rounded-r-lg my-4">
-                <p class="text-gray-700 dark:text-gray-300 leading-relaxed text-justify">${content}</p>
-              </div>`;
-          }
-          return `<p class="mb-3">${content}</p>`;
-        })
-
-        // 트렌드 분석 마지막 단락 처리
-        .replace(/^(이러한 미국의 급격한 관세.*?)$/gm, (match, content) => {
-          const id = extractId(match);
-          if (trendSection && trendSection[0].includes(match)) {
-            return `<div ${
-              id ? `id="${id}"` : ""
-            } class="p-4 border-l-4 border-purple-500 dark:border-purple-600 bg-purple-50 dark:bg-purple-900/20 rounded-r-lg my-4">
-                <p class="text-gray-700 dark:text-gray-300 leading-relaxed text-justify">${content}</p>
-              </div>`;
-          }
-          return `<p class="mb-3">${content}</p>`;
         })
 
         // 트렌드 분석 섹션 전체를 감싸는 컨테이너 추가
@@ -334,7 +295,18 @@ export const SearchResults: React.FC<SearchResultsProps> = ({ results }) => {
         )
 
         // 일반 글머리 기호 목록 처리
-        .replace(/^\* ([^*].*?)$/gm, '<li class="ml-5 mb-3">$1</li>')
+        .replace(/^\* ([^*].*?)$/gm, (match, content) => {
+          const id = extractId(match);
+          // ID가 있는 경우 활용
+          const idAttr = id ? `id="${id}"` : "";
+
+          // 트렌드 분석 ID가 포함된 경우 특별 스타일 적용
+          if (id === "trend-analysis" || match.includes("trend-analysis")) {
+            return `<li ${idAttr} class="ml-5 mb-3 p-3 border-l-4 border-blue-500 dark:border-blue-600 bg-blue-50 dark:bg-blue-900/20 rounded-lg">${content}</li>`;
+          }
+
+          return `<li ${idAttr} class="ml-5 mb-3">${content}</li>`;
+        })
 
         // 구분선 처리
         .replace(
@@ -345,9 +317,24 @@ export const SearchResults: React.FC<SearchResultsProps> = ({ results }) => {
 
     // li 태그들을 ul로 감싸기
     formattedContent = formattedContent.replace(
-      /(<li class="ml-5 mb-3">.*?<\/li>\n?)+/g,
+      /(<li class="ml-5 mb-3.*?<\/li>\n?)+/g,
       (match) =>
         `<ul class="list-disc space-y-2 mb-6 bg-gray-50 dark:bg-gray-900/30 p-4 rounded-lg">${match}</ul>`
+    );
+
+    // 트렌드 분석 ID가 있지만 다른 패턴의 경우 처리
+    formattedContent = formattedContent.replace(
+      /([^>]+)→ id="trend-analysis"([^<]*)/g,
+      `<div id="trend-analysis" class="p-4 border-l-4 border-blue-500 dark:border-blue-600 bg-blue-50 dark:bg-blue-900/20 rounded-r-lg my-4">
+        <p class="text-gray-700 dark:text-gray-300 leading-relaxed text-justify">$1$2</p>
+      </div>`
+    );
+
+    formattedContent = formattedContent.replace(
+      /([^>]+)→id="trend-analysis"([^<]*)/g,
+      `<div id="trend-analysis" class="p-4 border-l-4 border-blue-500 dark:border-blue-600 bg-blue-50 dark:bg-blue-900/20 rounded-r-lg my-4">
+        <p class="text-gray-700 dark:text-gray-300 leading-relaxed text-justify">$1$2</p>
+      </div>`
     );
 
     // 링크 처리 (모든 형식의 보고서에 공통 적용)
@@ -366,10 +353,6 @@ export const SearchResults: React.FC<SearchResultsProps> = ({ results }) => {
   if (isStructuredReport) {
     const htmlContent = formatContent(results);
 
-    // 주요 섹션 추출 (예: 참고 링크)
-    const hasReferenceLinks =
-      results.includes("## ✅ 참고 링크") || results.includes("참고 링크");
-
     return (
       <div className="space-y-6">
         <TableOfContents results={results} />
@@ -379,33 +362,6 @@ export const SearchResults: React.FC<SearchResultsProps> = ({ results }) => {
             className="prose dark:prose-invert max-w-none prose-headings:font-display prose-p:leading-relaxed prose-p:text-justify"
             dangerouslySetInnerHTML={{ __html: htmlContent }}
           />
-
-          {hasReferenceLinks && (
-            <div className="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">
-              <div className="flex justify-between items-center mb-4">
-                <button
-                  onClick={() => window.print()}
-                  className="inline-flex items-center text-sm font-medium px-3 py-1.5 rounded-lg bg-blue-50 hover:bg-blue-100 dark:bg-blue-900/30 dark:hover:bg-blue-900/50 text-blue-700 dark:text-blue-300 transition-colors"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={1.5}
-                    stroke="currentColor"
-                    className="w-4 h-4 mr-1"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M6.72 13.829c-.24.03-.48.062-.72.096m.72-.096a42.415 42.415 0 0 1 10.56 0m-10.56 0L6.34 18m10.94-4.171c.24.03.48.062.72.096m-.72-.096L17.66 18m0 0 .229 2.523a1.125 1.125 0 0 1-1.12 1.227H7.231c-.662 0-1.18-.568-1.12-1.227L6.34 18m11.318 0h1.091A2.25 2.25 0 0 0 21 15.75V9.456c0-1.081-.768-2.015-1.837-2.175a48.055 48.055 0 0 0-1.913-.247M6.34 18H5.25A2.25 2.25 0 0 1 3 15.75V9.456c0-1.081.768-2.015 1.837-2.175a48.041 48.041 0 0 1 1.913-.247m10.5 0a48.536 48.536 0 0 0-10.5 0m10.5 0V3.375c0-.621-.504-1.125-1.125-1.125h-8.25c-.621 0-1.125.504-1.125 1.125v3.659M18 10.5h.008v.008H18V10.5Zm-3 0h.008v.008H15V10.5Z"
-                    />
-                  </svg>
-                  인쇄하기
-                </button>
-              </div>
-            </div>
-          )}
         </div>
       </div>
     );

@@ -13,8 +13,43 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "DeepNews - 뉴스 검색 서비스",
-  description: "Gemini API를 활용한 심층 뉴스 검색 서비스",
+  title: "DeepNews - ai를 활용한 간단한 뉴스 요약 서비스",
+  description: "ai를 활용한 간단한 뉴스 요약 서비스",
+  keywords:
+    "뉴스, 검색, 심층 분석, AI, Gemini, 뉴스 검색, 딥러닝, 뉴스요약, 한눈에 보는 뉴스, ai 뉴스",
+  authors: [{ name: "DeepNews Team" }],
+  creator: "DeepNews",
+  publisher: "DeepNews",
+  icons: {
+    icon: "/logo.png",
+    apple: "/logo.png",
+  },
+  openGraph: {
+    title: "DeepNews - ai를 활용한 간단한 뉴스 요약 서비스",
+    description: "ai를 활용한 간단한 뉴스 요약 서비스",
+    url: "https://deepnews.vercel.app",
+    siteName: "DeepNews",
+    locale: "ko_KR",
+    type: "website",
+    images: [
+      {
+        url: "/logo.png",
+        width: 512,
+        height: 512,
+        alt: "DeepNews 로고",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "DeepNews - ai를 활용한 간단한 뉴스 요약 서비스",
+    description: "ai를 활용한 간단한 뉴스 요약 서비스",
+    images: ["/logo.png"],
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function RootLayout({
@@ -24,6 +59,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
+      <head>
+        <meta name="google-adsense-account" content="ca-pub-4923560171218864" />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gray-50 dark:bg-gray-900`}
       >

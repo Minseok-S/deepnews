@@ -150,17 +150,17 @@ export const TableOfContents: React.FC<TableOfContentsProps> = ({
   }
 
   return (
-    <div className="bg-white dark:bg-gray-800 p-6 rounded-xl mb-6 sticky top-4 shadow-lg border border-gray-100 dark:border-gray-700">
-      <h3 className="text-xl font-bold mb-4 text-gray-800 dark:text-white border-b pb-3 border-gray-200 dark:border-gray-700">
+    <div className="bg-white dark:bg-gray-800 p-4 sm:p-6 rounded-lg sm:rounded-xl mb-4 sm:mb-6 sticky top-4 shadow-md sm:shadow-lg border border-gray-100 dark:border-gray-700">
+      <h3 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4 text-gray-800 dark:text-white border-b pb-2 sm:pb-3 border-gray-200 dark:border-gray-700">
         목차
       </h3>
-      <nav className="mt-3">
-        <ul className="space-y-2">
+      <nav className="mt-2 sm:mt-3">
+        <ul className="space-y-1 sm:space-y-2">
           {tocItems.map((item) => (
             <li key={item.id} className="pl-1">
               <a
                 href={`#${item.id}`}
-                className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 hover:bg-blue-50 dark:hover:bg-blue-900/20 block py-2 px-3 rounded-lg transition-colors items-center gap-3"
+                className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 hover:bg-blue-50 dark:hover:bg-blue-900/20 block py-1.5 sm:py-2 px-2 sm:px-3 rounded-lg transition-colors text-sm sm:text-base flex items-center gap-2 sm:gap-3"
                 onClick={(e) => {
                   e.preventDefault();
                   const element = document.getElementById(item.id);
@@ -170,12 +170,12 @@ export const TableOfContents: React.FC<TableOfContentsProps> = ({
                 }}
               >
                 {item.title.startsWith("종합") ? (
-                  <span className="inline-flex items-center justify-center w-7 h-7 rounded-full bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200">
+                  <span className="inline-flex items-center justify-center w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       viewBox="0 0 20 20"
                       fill="currentColor"
-                      className="w-4 h-4"
+                      className="w-3.5 h-3.5 sm:w-4 sm:h-4"
                     >
                       <path d="M10 12.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z" />
                       <path
@@ -186,7 +186,7 @@ export const TableOfContents: React.FC<TableOfContentsProps> = ({
                     </svg>
                   </span>
                 ) : (
-                  <span className="inline-flex items-center justify-center w-7 h-7 rounded-full bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 font-semibold">
+                  <span className="inline-flex items-center justify-center w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 font-semibold text-xs sm:text-sm">
                     {item.title.split(".")[0]}
                   </span>
                 )}
@@ -200,10 +200,10 @@ export const TableOfContents: React.FC<TableOfContentsProps> = ({
           ))}
         </ul>
       </nav>
-      <div className="mt-5 pt-4 border-t border-gray-200 dark:border-gray-700 text-center">
+      <div className="mt-4 sm:mt-5 pt-3 sm:pt-4 border-t border-gray-200 dark:border-gray-700 text-center">
         <button
           onClick={() => window.print()}
-          className="inline-flex items-center justify-center gap-2 text-sm font-medium px-4 py-2 rounded-lg bg-blue-50 hover:bg-blue-100 dark:bg-blue-900/30 dark:hover:bg-blue-900/50 text-blue-700 dark:text-blue-300 transition-colors"
+          className="inline-flex items-center justify-center gap-1.5 sm:gap-2 text-xs sm:text-sm font-medium px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg bg-blue-50 hover:bg-blue-100 dark:bg-blue-900/30 dark:hover:bg-blue-900/50 text-blue-700 dark:text-blue-300 transition-colors"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -211,7 +211,7 @@ export const TableOfContents: React.FC<TableOfContentsProps> = ({
             viewBox="0 0 24 24"
             strokeWidth={1.5}
             stroke="currentColor"
-            className="w-4 h-4"
+            className="w-3.5 h-3.5 sm:w-4 sm:h-4"
           >
             <path
               strokeLinecap="round"

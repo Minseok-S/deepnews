@@ -31,7 +31,6 @@ export default function Home() {
       const model = genAI.getGenerativeModel({
         model: "gemini-2.5-pro-exp-03-25",
         tools: [
-          // Gemini API의 google_search 도구는 타입 문제로 인해 any 타입으로 캐스팅합니다.
           {
             google_search: {},
           } as any,
@@ -51,9 +50,9 @@ export default function Home() {
           '한국어와 영어로 두 가지 언어로 "{query}"를 검색하여 국내외 정보를 모두 포함해주세요.';
       } else {
         const languageMap: Record<string, string> = {
-          kr: '한국어로 "{query}"를 검색하여 한국 내 정보를 찾아주세요.',
-          us: '영어로 "{query}"를 검색하여 미국 내 정보를 찾아주세요.',
-          cn: '중국어로 "{query}"를 검색하여 중국 내 정보를 찾아주세요.',
+          kr: '한국어로 "{query}"를 검색하여 한국 내 정보만 찾아주세요.',
+          us: '영어로 "{query}"를 검색하여 미국 내 정보만 찾아주세요.',
+          cn: '중국어로 "{query}"를 검색하여 중국 내 정보만 찾아주세요.',
         };
 
         const languageInstructions = countries
@@ -102,20 +101,20 @@ export default function Home() {
     <div className="flex flex-col min-h-screen">
       <Header />
 
-      <main className="flex-grow container mx-auto px-4 py-8">
+      <main className="flex-grow container mx-auto px-4 py-4 sm:py-8">
         <div className="max-w-5xl mx-auto">
           <SearchBox onSearch={handleSearch} isLoading={isLoading} />
 
           {error && (
-            <div className="bg-red-50 dark:bg-red-900/20 text-red-800 dark:text-red-200 p-4 mb-6 rounded-md">
+            <div className="bg-red-50 dark:bg-red-900/20 text-red-800 dark:text-red-200 p-3 sm:p-4 mb-4 sm:mb-6 rounded-md text-sm sm:text-base">
               {error}
             </div>
           )}
 
           {isLoading && (
-            <div className="flex flex-col justify-center items-center p-8">
-              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500 mb-4"></div>
-              <p className="text-gray-600 dark:text-gray-300">
+            <div className="flex flex-col justify-center items-center p-4 sm:p-8">
+              <div className="animate-spin rounded-full h-10 w-10 sm:h-12 sm:w-12 border-t-2 border-b-2 border-blue-500 mb-3 sm:mb-4"></div>
+              <p className="text-sm sm:text-base text-gray-600 dark:text-gray-300 text-center">
                 &quot;{searchQuery}&quot;에 대한 정보를 찾고 있습니다...
               </p>
             </div>

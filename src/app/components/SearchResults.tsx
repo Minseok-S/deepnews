@@ -101,7 +101,7 @@ export const SearchResults: React.FC<SearchResultsProps> = ({ results }) => {
           const id = extractId(match);
           return `<h2 ${
             id ? `id="${id}"` : ""
-          } class="text-2xl font-bold text-blue-700 dark:text-blue-400 mt-8 mb-4 pb-3 border-b border-gray-200 dark:border-gray-700">${title}</h2>`;
+          } class="text-xl sm:text-2xl font-bold text-blue-700 dark:text-blue-400 mt-6 sm:mt-8 mb-3 sm:mb-4 pb-2 sm:pb-3 border-b border-gray-200 dark:border-gray-700">${title}</h2>`;
         })
 
         // H3 섹션 처리 - 주요 섹션 헤더에 특별한 스타일 적용
@@ -112,9 +112,9 @@ export const SearchResults: React.FC<SearchResultsProps> = ({ results }) => {
           if (title.includes("주요 뉴스 헤드라인")) {
             return `<h3 ${
               id ? `id="${id}"` : ""
-            } class="text-xl font-bold text-gray-800 dark:text-gray-200 mt-8 mb-4 flex items-center">
+            } class="text-lg sm:text-xl font-bold text-gray-800 dark:text-gray-200 mt-6 sm:mt-8 mb-3 sm:mb-4 flex items-center">
                 <span class="mr-2 text-blue-600 dark:text-blue-400">
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 sm:w-6 sm:h-6">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 7.5h1.5m-1.5 3h1.5m-7.5 3h7.5m-7.5 3h7.5m3-9h3.375c.621 0 1.125.504 1.125 1.125V18a2.25 2.25 0 0 1-2.25 2.25M16.5 7.5V18a2.25 2.25 0 0 0 2.25 2.25M16.5 7.5V4.875c0-.621-.504-1.125-1.125-1.125H4.125C3.504 3.75 3 4.254 3 4.875V18a2.25 2.25 0 0 0 2.25 2.25h13.5M6 7.5h3v3H6v-3Z" />
                   </svg>
                 </span>
@@ -123,9 +123,9 @@ export const SearchResults: React.FC<SearchResultsProps> = ({ results }) => {
           } else if (title.includes("핵심 내용 요약")) {
             return `<h3 ${
               id ? `id="${id}"` : ""
-            } class="text-xl font-bold text-gray-800 dark:text-gray-200 mt-8 mb-4 flex items-center">
+            } class="text-lg sm:text-xl font-bold text-gray-800 dark:text-gray-200 mt-6 sm:mt-8 mb-3 sm:mb-4 flex items-center">
                 <span class="mr-2 text-blue-600 dark:text-blue-400">
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 sm:w-6 sm:h-6">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 12h16.5m-16.5 3.75h16.5M3.75 19.5h16.5M5.625 4.5h12.75a1.875 1.875 0 0 1 0 3.75H5.625a1.875 1.875 0 0 1 0-3.75Z" />
                   </svg>
                 </span>
@@ -134,9 +134,9 @@ export const SearchResults: React.FC<SearchResultsProps> = ({ results }) => {
           } else if (title.includes("전반적인 트렌드 분석")) {
             return `<h3 ${
               id ? `id="${id}"` : ""
-            } class="text-xl font-bold text-gray-800 dark:text-gray-200 mt-8 mb-4 flex items-center">
+            } class="text-lg sm:text-xl font-bold text-gray-800 dark:text-gray-200 mt-6 sm:mt-8 mb-3 sm:mb-4 flex items-center">
                 <span class="mr-2 text-blue-600 dark:text-blue-400">
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 sm:w-6 sm:h-6">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 0 1 5.814-5.519l2.74-1.22m0 0-5.94-2.28m5.94 2.28-2.28 5.941" />
                   </svg>
                 </span>
@@ -145,9 +145,9 @@ export const SearchResults: React.FC<SearchResultsProps> = ({ results }) => {
           } else if (title.includes("참고 링크")) {
             return `<h3 ${
               id ? `id="${id}"` : ""
-            } class="text-xl font-bold text-gray-800 dark:text-gray-200 mt-8 mb-4 flex items-center">
+            } class="text-lg sm:text-xl font-bold text-gray-800 dark:text-gray-200 mt-6 sm:mt-8 mb-3 sm:mb-4 flex items-center">
                 <span class="mr-2 text-blue-600 dark:text-blue-400">
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 sm:w-6 sm:h-6">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M13.19 8.688a4.5 4.5 0 0 1 1.242 7.244l-4.5 4.5a4.5 4.5 0 0 1-6.364-6.364l1.757-1.757m13.35-.622 1.757-1.757a4.5 4.5 0 0 0-6.364-6.364l-4.5 4.5a4.5 4.5 0 0 0 1.242 7.244" />
                   </svg>
                 </span>
@@ -157,7 +157,7 @@ export const SearchResults: React.FC<SearchResultsProps> = ({ results }) => {
           // 기본 H3 스타일
           return `<h3 ${
             id ? `id="${id}"` : ""
-          } class="text-xl font-bold text-gray-800 dark:text-gray-200 mt-6 mb-3">${title}</h3>`;
+          } class="text-lg sm:text-xl font-bold text-gray-800 dark:text-gray-200 mt-4 sm:mt-6 mb-2 sm:mb-3">${title}</h3>`;
         })
 
         // 숫자 목록 처리 (뉴스 헤드라인)
@@ -167,15 +167,17 @@ export const SearchResults: React.FC<SearchResultsProps> = ({ results }) => {
           if (headlinesSection && headlinesSection[0].includes(match)) {
             return `<div ${
               id ? `id="${id}"` : ""
-            } class="flex mb-4 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg items-start hover:shadow-md transition-shadow">
-                <span class="font-bold mr-3 mt-1 inline-flex items-center justify-center min-w-7 h-7 rounded-full bg-blue-500 dark:bg-blue-700 text-white">${num}</span>
-                <span class="flex-1 font-medium">${content}</span>
+            } class="flex mb-3 sm:mb-4 p-2 sm:p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg items-start hover:shadow-md transition-shadow">
+                <span class="font-bold mr-2 sm:mr-3 mt-0.5 sm:mt-1 inline-flex items-center justify-center min-w-6 h-6 sm:min-w-7 sm:h-7 rounded-full bg-blue-500 dark:bg-blue-700 text-white text-xs sm:text-sm">${num}</span>
+                <span class="flex-1 font-medium text-sm sm:text-base">${content}</span>
               </div>`;
           }
           // 기본 번호 목록
-          return `<div ${id ? `id="${id}"` : ""} class="flex mb-3 items-start">
-              <span class="font-bold mr-3 mt-0.5 inline-flex items-center justify-center min-w-6 h-6 rounded-full bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200">${num}</span>
-              <span>${content}</span>
+          return `<div ${
+            id ? `id="${id}"` : ""
+          } class="flex mb-2 sm:mb-3 items-start">
+              <span class="font-bold mr-2 sm:mr-3 mt-0.5 inline-flex items-center justify-center min-w-5 h-5 sm:min-w-6 sm:h-6 rounded-full bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-xs sm:text-sm">${num}</span>
+              <span class="text-sm sm:text-base">${content}</span>
             </div>`;
         })
 
@@ -410,19 +412,12 @@ export const SearchResults: React.FC<SearchResultsProps> = ({ results }) => {
   }
 
   return (
-    <div className="bg-white dark:bg-gray-800 shadow-lg rounded-xl p-8 border border-gray-100 dark:border-gray-700 transition-all duration-200 hover:shadow-xl">
-      <h2 className="text-2xl font-bold mb-6 text-gray-800 dark:text-white border-b pb-3 border-gray-200 dark:border-gray-700">
-        검색 결과
-      </h2>
-      <div className="prose dark:prose-invert max-w-none prose-p:leading-relaxed prose-p:text-justify">
-        {results.split("\n").map((line, index) => (
-          <p
-            key={index}
-            className="mb-3 text-gray-700 dark:text-gray-300 text-justify"
-          >
-            {line}
-          </p>
-        ))}
+    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4 sm:p-6 mb-3 sm:mb-6">
+      <div className="prose prose-blue dark:prose-invert prose-sm sm:prose-base max-w-none">
+        <div
+          className="text-gray-800 dark:text-gray-200 text-sm sm:text-base"
+          dangerouslySetInnerHTML={{ __html: formatContent(results) }}
+        />
       </div>
     </div>
   );

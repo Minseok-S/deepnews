@@ -271,7 +271,7 @@ export const SearchResults: React.FC<SearchResultsProps> = ({ results }) => {
                 .trim();
 
               // 여러 구분자로 단락 분리
-              let splitParagraphs: string[] = [];
+              const splitParagraphs: string[] = [];
 
               // 우선 빈 줄과 ₩ 문자로 분리
               const initialSplit = cleanContent

@@ -156,7 +156,7 @@ export const TableOfContents: React.FC<TableOfContentsProps> = ({
       </h3>
       <nav className="mt-3">
         <ul className="space-y-2">
-          {tocItems.map((item, index) => (
+          {tocItems.map((item) => (
             <li key={item.id} className="pl-1">
               <a
                 href={`#${item.id}`}

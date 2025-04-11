@@ -31,6 +31,7 @@ export default function Home() {
       const model = genAI.getGenerativeModel({
         model: "gemini-2.5-pro-exp-03-25",
         tools: [
+          // Gemini API의 google_search 도구는 타입 문제로 인해 any 타입으로 캐스팅합니다.
           {
             google_search: {},
           } as any,
@@ -115,7 +116,7 @@ export default function Home() {
             <div className="flex flex-col justify-center items-center p-8">
               <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500 mb-4"></div>
               <p className="text-gray-600 dark:text-gray-300">
-                "{searchQuery}"에 대한 정보를 찾고 있습니다...
+                &quot;{searchQuery}&quot;에 대한 정보를 찾고 있습니다...
               </p>
             </div>
           )}

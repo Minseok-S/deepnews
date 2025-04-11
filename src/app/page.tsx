@@ -12,6 +12,7 @@ export default function Home() {
   const [results, setResults] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState<string>("");
+  const [showIntro, setShowIntro] = useState(true);
 
   const handleSearch = async (query: string, countries: string[]) => {
     if (!query.trim()) return;
@@ -117,6 +118,73 @@ export default function Home() {
               <p className="text-sm sm:text-base text-gray-600 dark:text-gray-300 text-center">
                 &quot;{searchQuery}&quot;에 대한 정보를 찾고 있습니다...
               </p>
+            </div>
+          )}
+
+          {!isLoading && !results && showIntro && (
+            <div className="mt-6 p-6 bg-white dark:bg-gray-800 rounded-lg shadow-md">
+              <h2 className="text-xl sm:text-2xl font-bold mb-4 text-gray-800 dark:text-white">
+                DeepNews 소개
+              </h2>
+
+              <div className="mb-6">
+                <h3 className="text-lg font-semibold mb-2 text-gray-700 dark:text-gray-200">
+                  서비스 설명
+                </h3>
+                <p className="text-gray-600 dark:text-gray-300 mb-3">
+                  DeepNews는 AI를 활용한 심층 뉴스 요약 서비스입니다. 구글
+                  Gemini AI 모델을 통해 다양한 뉴스 소스에서 정보를 수집하고
+                  분석하여 종합적인 보고서를 제공합니다.
+                </p>
+                <p className="text-gray-600 dark:text-gray-300">
+                  최신 뉴스와 관련 정보를 빠르게 찾고, 다양한 관점에서 정보를
+                  확인할 수 있습니다.
+                </p>
+              </div>
+
+              <div className="mb-6">
+                <h3 className="text-lg font-semibold mb-2 text-gray-700 dark:text-gray-200">
+                  사용 방법
+                </h3>
+                <ol className="list-decimal pl-5 space-y-2 text-gray-600 dark:text-gray-300">
+                  <li>검색창에 관심 있는 주제나 키워드를 입력하세요.</li>
+                  <li>
+                    검색하고자 하는 국가를 선택하세요 (한국, 미국, 중국 또는
+                    모든 국가).
+                  </li>
+                  <li>
+                    '검색' 버튼을 클릭하면 AI가 관련 뉴스를 검색하고 분석합니다.
+                  </li>
+                  <li>잠시 후 종합된 정보가 표시됩니다.</li>
+                </ol>
+              </div>
+
+              <div>
+                <h3 className="text-lg font-semibold mb-2 text-gray-700 dark:text-gray-200">
+                  유의사항
+                </h3>
+                <ul className="list-disc pl-5 space-y-2 text-gray-600 dark:text-gray-300">
+                  <li>
+                    검색 결과는 AI가 생성한 내용으로, 정확성을 보장하지
+                    않습니다.
+                  </li>
+                  <li>
+                    국가별 검색 기능을 활용하면 특정 지역의 뉴스에 집중할 수
+                    있습니다.
+                  </li>
+                  <li>
+                    복잡한 주제일수록 검색 결과 생성에 시간이 더 소요될 수
+                    있습니다.
+                  </li>
+                </ul>
+              </div>
+
+              <button
+                onClick={() => setShowIntro(false)}
+                className="mt-6 text-sm text-blue-600 dark:text-blue-400 hover:underline"
+              >
+                이 안내 다시 보지 않기
+              </button>
             </div>
           )}
 

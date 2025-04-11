@@ -14,7 +14,12 @@ export default function Home() {
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [showIntro, setShowIntro] = useState(true);
 
-  const handleSearch = async (query: string, countries: string[]) => {
+  const handleSearch = async (
+    query: string,
+    countries: string[],
+    dateRange: string,
+    newsCount: number
+  ) => {
     if (!query.trim()) return;
 
     setSearchQuery(query);
@@ -67,13 +72,30 @@ export default function Home() {
         }
       }
 
+      // 날짜 범위 설정
+      let dateInstruction = "";
+      // dateRange 형식: "YYYY-MM-DD~YYYY-MM-DD"
+      if (dateRange && dateRange.includes("~")) {
+        const [startDate, endDate] = dateRange.split("~");
+        dateInstruction = `검색결과는 최대한 ${startDate}부터 ${endDate}까지의 기간 동안의 정보를 검색해주세요.`;
+      } else {
+        // 기본값 (오늘)
+        dateInstruction =
+          "검색결과는 최대한 오늘 날짜 정보를 위주로 검색해주세요.";
+      }
+
+      // 뉴스 수 설정
+      const newsCountInstruction = `최소 ${
+        newsCount * 2
+      }개의 뉴스 기사를 찾아 요약해주세요.`;
+
       // 변수 치환하여 프롬프트 생성
       const prompt = promptTemplate
         .replace(/{query}/g, query)
         .replace(/{currentDate}/g, currentDate)
-        .replace(/{languageInstruction}/g, languageInstruction);
-
-      console.log(prompt);
+        .replace(/{languageInstruction}/g, languageInstruction)
+        .replace(/{dateInstruction}/g, dateInstruction)
+        .replace(/{newsCountInstruction}/g, newsCountInstruction);
 
       const generationConfig = {
         temperature: 0,
@@ -117,6 +139,12 @@ export default function Home() {
               <p className="text-sm sm:text-base text-gray-600 dark:text-gray-300 text-center">
                 &quot;{searchQuery}&quot;에 대한 정보를 찾고 있습니다...
               </p>
+              <p className="text-xs sm:text-sm text-amber-600 dark:text-amber-400 text-center mt-2">
+                선택한 뉴스 수와 검색 기간에 따라 처리 시간이 달라질 수
+                있습니다.
+                <br className="hidden sm:block" />
+                뉴스 수가 많을수록 더 많은 시간이 소요됩니다.
+              </p>
             </div>
           )}
 
@@ -148,8 +176,8 @@ export default function Home() {
                 <ol className="list-decimal pl-5 space-y-2 text-gray-600 dark:text-gray-300">
                   <li>검색창에 관심 있는 주제나 키워드를 입력하세요.</li>
                   <li>
-                    검색하고자 하는 국가를 선택하세요 (한국, 미국 또는
-                    모든 국가).
+                    검색하고자 하는 국가를 선택하세요 (한국, 미국 또는 모든
+                    국가).
                   </li>
                   <li>
                     &quot;검색&quot; 버튼을 클릭하면 AI가 관련 뉴스를 검색하고

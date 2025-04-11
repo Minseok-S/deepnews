@@ -3,7 +3,12 @@
 import React, { useState } from "react";
 
 interface SearchBoxProps {
-  onSearch: (query: string, countries: string[]) => Promise<void>;
+  onSearch: (
+    query: string,
+    countries: string[],
+    date: string,
+    newsCount: number
+  ) => Promise<void>;
   isLoading: boolean;
 }
 
@@ -13,6 +18,63 @@ export const SearchBox: React.FC<SearchBoxProps> = ({
 }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCountries, setSelectedCountries] = useState<string[]>(["all"]);
+  const [startDate, setStartDate] = useState<string>(
+    new Date().toISOString().split("T")[0]
+  );
+  const [endDate, setEndDate] = useState<string>(
+    new Date().toISOString().split("T")[0]
+  );
+  const [newsCount, setNewsCount] = useState<number>(10);
+  const [activeDateRange, setActiveDateRange] = useState<
+    "today" | "week" | "month" | "year" | "custom"
+  >("today");
+
+  // 오늘 날짜
+  const getMaxDate = () => {
+    return new Date().toISOString().split("T")[0];
+  };
+
+  // 간편 날짜 설정 함수
+  const setDateRange = (range: "today" | "week" | "month" | "year") => {
+    const today = new Date();
+    const endDateStr = today.toISOString().split("T")[0];
+
+    let startDateObj = new Date(today);
+
+    switch (range) {
+      case "today":
+        // 시작일과 종료일 모두 오늘로 설정
+        break;
+      case "week":
+        // 1주일 전으로 설정
+        startDateObj.setDate(today.getDate() - 7);
+        break;
+      case "month":
+        // 1달 전으로 설정
+        startDateObj.setMonth(today.getMonth() - 1);
+        break;
+      case "year":
+        // 1년 전으로 설정
+        startDateObj.setFullYear(today.getFullYear() - 1);
+        break;
+    }
+
+    const startDateStr = startDateObj.toISOString().split("T")[0];
+
+    setStartDate(startDateStr);
+    setEndDate(endDateStr);
+    setActiveDateRange(range);
+  };
+
+  // 직접 날짜 변경 시 custom 모드로 변경
+  const handleDateChange = (date: string, type: "start" | "end") => {
+    if (type === "start") {
+      setStartDate(date);
+    } else {
+      setEndDate(date);
+    }
+    setActiveDateRange("custom");
+  };
 
   const handleCountryToggle = (country: string) => {
     if (country === "all") {
@@ -42,7 +104,9 @@ export const SearchBox: React.FC<SearchBoxProps> = ({
     e.preventDefault();
     if (!searchQuery.trim()) return;
 
-    await onSearch(searchQuery, selectedCountries);
+    // 날짜 범위를 시작일~종료일 형식으로 전달
+    const dateRange = `${startDate}~${endDate}`;
+    await onSearch(searchQuery, selectedCountries, dateRange, newsCount);
   };
 
   const CountryButton = ({
@@ -59,6 +123,29 @@ export const SearchBox: React.FC<SearchBoxProps> = ({
         onClick={() => handleCountryToggle(country)}
         className={`px-2 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm rounded-md transition-colors ${
           isSelected
+            ? "bg-blue-600 text-white"
+            : "bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"
+        }`}
+      >
+        {label}
+      </button>
+    );
+  };
+
+  const DateRangeButton = ({
+    range,
+    label,
+  }: {
+    range: "today" | "week" | "month" | "year";
+    label: string;
+  }) => {
+    const isActive = activeDateRange === range;
+    return (
+      <button
+        type="button"
+        onClick={() => setDateRange(range)}
+        className={`px-2 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm rounded-md transition-colors ${
+          isActive
             ? "bg-blue-600 text-white"
             : "bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"
         }`}
@@ -94,6 +181,72 @@ export const SearchBox: React.FC<SearchBoxProps> = ({
             <CountryButton country="kr" label="한국" />
             <CountryButton country="us" label="미국" />
           </div>
+        </div>
+
+        <div className="flex flex-col gap-2 mb-3 sm:mb-4">
+          <div className="font-medium text-sm sm:text-base text-gray-700 dark:text-gray-300 mb-1">
+            검색 기간:
+          </div>
+          <div className="flex flex-wrap gap-2 mb-2">
+            <DateRangeButton range="today" label="오늘" />
+            <DateRangeButton range="week" label="일주일" />
+            <DateRangeButton range="month" label="한 달" />
+            <DateRangeButton range="year" label="일 년" />
+          </div>
+          <div className="flex flex-col sm:flex-row gap-3">
+            <div className="flex-1">
+              <label className="block text-xs text-gray-600 dark:text-gray-400 mb-1">
+                시작일
+              </label>
+              <input
+                type="date"
+                value={startDate}
+                max={getMaxDate()}
+                onChange={(e) => handleDateChange(e.target.value, "start")}
+                className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+            <div className="flex-1">
+              <label className="block text-xs text-gray-600 dark:text-gray-400 mb-1">
+                종료일
+              </label>
+              <input
+                type="date"
+                value={endDate}
+                min={startDate}
+                max={getMaxDate()}
+                onChange={(e) => handleDateChange(e.target.value, "end")}
+                className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+          </div>
+          <p className="text-xs text-amber-600 dark:text-amber-400 mt-1">
+            ※ 검색 기간이 길수록 정보의 정확도가 떨어질 수 있습니다. 최신 정보를
+            원하시면 짧은 기간을 선택하세요.
+          </p>
+        </div>
+
+        <div className="flex flex-col gap-2 mb-3 sm:mb-4">
+          <div className="font-medium text-sm sm:text-base text-gray-700 dark:text-gray-300 mb-1">
+            뉴스 수:
+          </div>
+          <div className="flex items-center">
+            <input
+              type="range"
+              min="5"
+              max="20"
+              value={newsCount}
+              onChange={(e) => setNewsCount(parseInt(e.target.value))}
+              className="w-full accent-blue-600"
+            />
+            <span className="ml-3 text-sm text-gray-700 dark:text-gray-300 min-w-[2rem] text-center">
+              {newsCount}
+            </span>
+          </div>
+          <p className="text-xs text-amber-600 dark:text-amber-400 mt-1">
+            ※ 뉴스 수가 많을수록 검색 및 요약 시간이 길어질 수 있습니다. 반면,
+            뉴스 수가 적을수록 정보의 다양성이 감소할 수 있습니다.
+          </p>
         </div>
 
         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 sm:gap-0">

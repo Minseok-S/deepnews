@@ -1,3 +1,76 @@
+# DeepNews
+
+DeepNews는 Gemini API를 활용하여 사용자가 검색한 키워드와 관련된 최신 뉴스를 분석하고 요약해주는 서비스입니다.
+
+## 주요 기능
+
+- 키워드 기반 뉴스 검색
+- Gemini AI를 활용한 뉴스 분석 및 요약
+- 주요 헤드라인, 핵심 내용, 트렌드 분석 제공
+
+## 기술 스택
+
+- **프론트엔드**: Next.js, React, TypeScript, Tailwind CSS
+- **AI**: Google Gemini API
+
+## 시작하기
+
+### 필수 요구사항
+
+- Node.js 18.0.0 이상
+- Google Gemini API 키
+
+### 설치 방법
+
+1. 저장소 클론하기:
+
+   ```bash
+   git clone https://github.com/yourusername/deepnews.git
+   cd deepnews
+   ```
+
+2. 의존성 설치:
+
+   ```bash
+   npm install
+   ```
+
+3. `.env.local` 파일에 Gemini API 키 설정:
+
+   ```
+   NEXT_PUBLIC_GEMINI_API_KEY=your_gemini_api_key_here
+   ```
+
+4. 개발 서버 실행:
+
+   ```bash
+   npm run dev
+   ```
+
+5. 브라우저에서 `http://localhost:3000`으로 접속하여 애플리케이션 확인
+
+## 프로젝트 구조
+
+```
+deepnews/
+├── src/
+│   ├── app/
+│   │   ├── components/
+│   │   │   ├── Header.tsx
+│   │   │   ├── Footer.tsx
+│   │   │   ├── SearchBox.tsx
+│   │   │   └── SearchResults.tsx
+│   │   ├── globals.css
+│   │   ├── layout.tsx
+│   │   └── page.tsx
+│   └── ...
+├── public/
+├── .env.local
+├── package.json
+├── README.md
+└── ...
+```
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started

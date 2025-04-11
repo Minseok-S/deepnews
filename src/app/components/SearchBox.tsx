@@ -12,7 +12,6 @@ export const SearchBox: React.FC<SearchBoxProps> = ({
   isLoading,
 }) => {
   const [searchQuery, setSearchQuery] = useState("");
-  const [isReportMode, setIsReportMode] = useState(false);
   const [selectedCountries, setSelectedCountries] = useState<string[]>(["all"]);
 
   const handleCountryToggle = (country: string) => {
@@ -43,11 +42,7 @@ export const SearchBox: React.FC<SearchBoxProps> = ({
     e.preventDefault();
     if (!searchQuery.trim()) return;
 
-    const finalQuery = isReportMode
-      ? `${searchQuery} 상세 분석 보고서`
-      : searchQuery;
-
-    await onSearch(finalQuery, selectedCountries);
+    await onSearch(searchQuery, selectedCountries);
   };
 
   const CountryButton = ({
@@ -102,27 +97,9 @@ export const SearchBox: React.FC<SearchBoxProps> = ({
           </div>
         </div>
 
-        <div className="flex items-center mb-4">
-          <input
-            type="checkbox"
-            id="reportMode"
-            checked={isReportMode}
-            onChange={() => setIsReportMode(!isReportMode)}
-            className="h-4 w-4 text-blue-600 border-gray-300 rounded"
-          />
-          <label
-            htmlFor="reportMode"
-            className="ml-2 text-gray-700 dark:text-gray-300"
-          >
-            상세 분석 보고서 생성
-          </label>
-        </div>
-
         <div className="flex justify-between items-center">
           <div className="text-sm text-gray-500 dark:text-gray-400">
-            {isReportMode
-              ? "검색어를 입력하면 관련 뉴스를 검색하고 상세 분석 보고서를 생성합니다."
-              : "검색어를 입력하면 관련 뉴스를 검색하고 주요 내용을 요약합니다."}
+            {"검색어를 입력하면 관련 뉴스를 검색하고 주요 내용을 요약합니다."}
           </div>
           <button
             type="submit"

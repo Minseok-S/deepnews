@@ -39,7 +39,7 @@ export const SearchBox: React.FC<SearchBoxProps> = ({
     const today = new Date();
     const endDateStr = today.toISOString().split("T")[0];
 
-    let startDateObj = new Date(today);
+    const startDateObj = new Date(today);
 
     switch (range) {
       case "today":

@@ -54,15 +54,11 @@ export const SearchResults: React.FC<SearchResultsProps> = ({ results }) => {
               .replace(/\*\*\(id="[^"]*"\)\*\*/g, "") // **(id="...")**
               .replace(/\(id="[^"]*"\)/g, "") // (id="...")
               .replace(/ → id="[^"]*"/g, "") // → id="..."
-              .replace(/→ id="[^"]*"/g, "") // →id="..."
-              .replace(/ →id="[^"]*"/g, "") // → id="..."
-              .replace(/→id="[^"]*"/g, "") // →id="..."
+              .replace(/→ id="[^"]*"/g, "") // →id="..." (공백 없는 경우)
               .replace(/ → id='[^']*'/g, "") // → id='...'
-              .replace(/→ id='[^']*'/g, "") // →id='...'
-              .replace(/ →id='[^']*'/g, "") // → id='...'
-              .replace(/→id='[^']*'/g, "") // →id='...'
-              .replace(/ → id=[^ \n]*/g, "") // → id=...
-              .replace(/→ id=[^ \n]*/g, "") // →id=...
+              .replace(/→ id='[^']*'/g, "") // →id='...' (공백 없는 경우)
+              .replace(/ → id=[^ ]*/g, "") // → id=... (따옴표 없는 경우)
+              .replace(/→ id=[^ ]*/g, "") // →id=... (공백 없는 경우)
               .replace(/ →id=[^ \n]*/g, "") // → id=...
               .replace(/→id=[^ \n]*/g, ""); // →id=...
           }
@@ -353,24 +349,175 @@ export const SearchResults: React.FC<SearchResultsProps> = ({ results }) => {
     const htmlContent = formatContent(results);
 
     return (
-      <div className="space-y-6 text-justify">
-        <div className="bg-white dark:bg-gray-800 shadow-lg rounded-xl p-8 overflow-auto print:shadow-none transition-all duration-200 hover:shadow-xl border border-gray-100 dark:border-gray-700">
-          <div
-            className="prose dark:prose-invert max-w-none prose-headings:font-display prose-p:leading-relaxed prose-p:text-justify text-justify"
-            dangerouslySetInnerHTML={{ __html: htmlContent }}
-          />
+      <div className="space-y-6">
+        <div className="bg-white dark:bg-gray-800 shadow-lg rounded-xl overflow-hidden border border-gray-100 dark:border-gray-700">
+          {/* 상단 헤더 영역 */}
+          <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/30 dark:to-indigo-900/30 px-8 py-4 border-b border-gray-200 dark:border-gray-700">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  className="w-6 h-6 mr-3 text-blue-600 dark:text-blue-400"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+                  <line x1="9" y1="3" x2="9" y2="21" />
+                </svg>
+                <h2 className="text-lg sm:text-xl font-semibold text-gray-800 dark:text-white">
+                  뉴스 요약 보고서
+                </h2>
+              </div>
+              <div className="flex space-x-2">
+                <button
+                  onClick={() => window.print()}
+                  className="p-2 text-gray-500 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400 transition-colors"
+                  title="인쇄하기"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-5 w-5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"
+                    />
+                  </svg>
+                </button>
+                <button
+                  onClick={() => {
+                    navigator.clipboard.writeText(results);
+                    alert("클립보드에 복사되었습니다.");
+                  }}
+                  className="p-2 text-gray-500 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400 transition-colors"
+                  title="복사하기"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-5 w-5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"
+                    />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {/* 본문 영역 */}
+          <div className="p-6 sm:p-8 overflow-auto print:shadow-none">
+            <div
+              className="prose dark:prose-invert max-w-none prose-headings:font-display prose-p:leading-relaxed prose-p:text-justify"
+              dangerouslySetInnerHTML={{ __html: htmlContent }}
+            />
+          </div>
+
+          {/* 푸터 영역: 타임스탬프 및 출처 정보 */}
+          <div className="bg-gray-50 dark:bg-gray-900/30 px-8 py-3 text-xs sm:text-sm text-gray-500 dark:text-gray-400 flex justify-between items-center border-t border-gray-200 dark:border-gray-700">
+            <span>생성 시간: {new Date().toLocaleString("ko-KR")}</span>
+            <span>출처: Gemini AI를 통한 자동 생성</span>
+          </div>
+        </div>
+
+        {/* 모바일 액션 버튼 */}
+        <div className="sm:hidden flex justify-center space-x-4">
+          <button
+            onClick={() => window.print()}
+            className="px-4 py-2 bg-blue-600 text-white rounded-md flex items-center"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-5 w-5 mr-2"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"
+              />
+            </svg>
+            인쇄하기
+          </button>
+          <button
+            onClick={() => {
+              navigator.clipboard.writeText(results);
+              alert("클립보드에 복사되었습니다.");
+            }}
+            className="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white rounded-md flex items-center"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-5 w-5 mr-2"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"
+              />
+            </svg>
+            복사하기
+          </button>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4 sm:p-6 mb-3 sm:mb-6 text-justify">
-      <div className="prose prose-blue dark:prose-invert prose-sm sm:prose-base max-w-none">
-        <div
-          className="text-gray-800 dark:text-gray-200 text-sm sm:text-base"
-          dangerouslySetInnerHTML={{ __html: formatContent(results) }}
-        />
+    <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden border border-gray-100 dark:border-gray-700">
+      <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/30 dark:to-indigo-900/30 px-6 py-3 border-b border-gray-200 dark:border-gray-700">
+        <h2 className="text-lg font-semibold text-gray-800 dark:text-white flex items-center">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-5 w-5 mr-2 text-blue-600 dark:text-blue-400"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+            />
+          </svg>
+          검색 결과
+        </h2>
+      </div>
+
+      <div className="p-4 sm:p-6 overflow-auto">
+        <div className="prose prose-blue dark:prose-invert prose-sm sm:prose-base max-w-none">
+          <div
+            className="text-gray-800 dark:text-gray-200 text-sm sm:text-base"
+            dangerouslySetInnerHTML={{ __html: formatContent(results) }}
+          />
+        </div>
+      </div>
+
+      <div className="bg-gray-50 dark:bg-gray-900/30 px-6 py-3 text-xs text-gray-500 dark:text-gray-400 border-t border-gray-200 dark:border-gray-700">
+        Gemini AI를 통한 자동 생성 | {new Date().toLocaleString("ko-KR")}
       </div>
     </div>
   );

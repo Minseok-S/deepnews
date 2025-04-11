@@ -32,7 +32,6 @@ export const metadata: Metadata = {
   description:
     "DeepNews는 AI(Gemini)를 활용하여 복잡한 뉴스를 쉽고 빠르게 요약해 드립니다. 최신 뉴스를 한눈에 파악하고 심층 분석 정보를 얻으세요.",
 
-  // Keywords: Relevant terms users might search for. (Note: Google largely ignores this, but other engines might use it).
   keywords: [
     "뉴스",
     "뉴스 요약",
@@ -45,6 +44,33 @@ export const metadata: Metadata = {
     "속보 요약",
     "DeepNews",
     "인공지능 뉴스",
+    "딥뉴스",
+    "딥 뉴스",
+    "딥뉴스 요약",
+    "딥뉴스 검색",
+    "딥뉴스 분석",
+    "딥뉴스 속보",
+    "딥뉴스 실시간",
+    "딥뉴스 최신",
+    "딥뉴스 최근",
+    "딥뉴스 최신 뉴스",
+    "딥뉴스 최근 뉴스",
+    "딥뉴스 최신 속보",
+    "딥뉴스 최근 속보",
+    "deepnews",
+    "deep news",
+    "deep news 요약",
+    "deep news 검색",
+    "deep news 분석",
+    "deep news 속보",
+    "deep news 실시간",
+    "DeepNews 요약",
+    "DeepNews 검색",
+    "DeepNews 분석",
+    "DeepNews 속보",
+    "DeepNews 실시간",
+    "DeepNews 최신",
+    "DeepNews 최근",
   ],
 
   authors: [{ name: "DeepNews Team", url: siteUrl }], // Link to author/team page if available

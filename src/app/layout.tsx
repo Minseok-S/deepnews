@@ -70,6 +70,13 @@ export default function RootLayout({
             name="google-site-verification"
             content="tW-owcSeSqto-tKT9N_hvSrU1N_uqejvc4fbTP0sAJ8"
           />
+          <script
+            async
+            src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4923560171218864"
+            crossOrigin="anonymous"
+          ></script>
+          <title>DeepNews - 뉴스 요약 서비스</title>
+          <link rel="icon" href="/logo.png" type="image/x-icon" />
         </head>
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gray-50 dark:bg-gray-900`}

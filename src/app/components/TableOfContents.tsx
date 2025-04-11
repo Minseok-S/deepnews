@@ -14,33 +14,45 @@ export const TableOfContents: React.FC<TableOfContentsProps> = ({
     const tocItems: { id: string; title: string }[] = [];
 
     // 새로운 형식 (ID 속성이 있는 목차 항목)
-    const newFormatMatches = content.match(/목차:([\s\S]*?)\*/);
+    let newFormatMatches = content.match(
+      /목차:([\s\S]*?)(?:\n\* \[목차|\n\* [0-9]+\.|\n\* 종합|\n\n|$)/
+    );
+
+    // 목차: 단어로 시작하는 항목이 없으면 '* 목차:' 패턴도 검색
+    if (!newFormatMatches) {
+      newFormatMatches = content.match(
+        /\* 목차:([\s\S]*?)(?:\n\* \[목차|\n\* [0-9]+\.|\n\* 종합|\n\n|$)/
+      );
+    }
+
+    // '* **목차:**' 패턴도 검색
+    if (!newFormatMatches) {
+      newFormatMatches = content.match(
+        /\* \*\*목차:\*\*([\s\S]*?)(?:\n\* \[목차|\n\* [0-9]+\.|\n\* 종합|\n\n|$)/
+      );
+    }
+
     if (newFormatMatches && newFormatMatches[1]) {
       const tocSection = newFormatMatches[1];
 
-      // 목차 항목 찾기 (예: "1. 소주제 제목 * id="toc-item-1"")
+      // 목차 항목 찾기 (예: "1. [소주제 제목]")
       const itemMatches = Array.from(
-        tocSection.matchAll(
-          /([0-9]+)\.\s+\[([^\]]+)\][\s\S]*?id="(toc-item-[^"]+)"/g
-        )
+        tocSection.matchAll(/([0-9]+)\.\s+\[([^\]]+)\]/g)
       );
 
       for (const match of itemMatches) {
-        if (match[2] && match[3]) {
+        if (match[1] && match[2]) {
           tocItems.push({
-            id: match[3],
+            id: `section-${match[1]}`,
             title: `${match[1]}. ${match[2].trim()}`,
           });
         }
       }
 
       // 마지막 '종합 정리 및 전망' 항목 추가
-      const summaryMatch = tocSection.match(
-        /종합 정리 및 전망[\s\S]*?id="(toc-item-summary)"/
-      );
-      if (summaryMatch) {
+      if (tocSection.includes("종합 정리 및 전망")) {
         tocItems.push({
-          id: summaryMatch[1],
+          id: "section-final",
           title: "종합 정리 및 전망",
         });
       }
@@ -85,13 +97,43 @@ export const TableOfContents: React.FC<TableOfContentsProps> = ({
         }
       }
 
-      // 종합 정리 및 전망 섹션 찾기
-      const finalSectionMatch = content.match(
-        /\* 종합 정리 및 전망:[\s\S]*?id="(section-final)"/
+      // 번호 패턴으로 섹션 찾기 (별표 강조 스타일)
+      const numberedSectionMatches = Array.from(
+        content.matchAll(/\* \*\*([0-9]+)\. (.*?)\*\*/g)
       );
+
+      for (const match of numberedSectionMatches) {
+        if (match[1] && match[2]) {
+          tocItems.push({
+            id: `section-${match[1]}`,
+            title: `${match[1]}. ${match[2].trim()}`,
+          });
+        }
+      }
+
+      // 번호 패턴으로 섹션 찾기 (별표 없는 스타일)
+      const simpleSectionMatches = Array.from(
+        content.matchAll(/\* ([0-9]+)\. (.*?)(?=\n)/g)
+      );
+
+      for (const match of simpleSectionMatches) {
+        if (match[1] && match[2]) {
+          tocItems.push({
+            id: `section-${match[1]}`,
+            title: `${match[1]}. ${match[2].trim()}`,
+          });
+        }
+      }
+
+      // 종합 정리 및 전망 섹션 찾기 (여러 패턴)
+      const finalSectionMatch =
+        content.match(/\* 종합 정리 및 전망:[\s\S]*?id="(section-final)"/) ||
+        content.match(/\* \*\*종합 정리 및 전망\*\*/) ||
+        content.match(/\* 종합 정리 및 전망:/);
+
       if (finalSectionMatch) {
         tocItems.push({
-          id: finalSectionMatch[1],
+          id: "section-final",
           title: "종합 정리 및 전망",
         });
       }

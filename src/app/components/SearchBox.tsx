@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 
 interface SearchBoxProps {
-  onSearch: (query: string) => Promise<void>;
+  onSearch: (query: string, countries: string[]) => Promise<void>;
   isLoading: boolean;
 }
 
@@ -13,17 +13,64 @@ export const SearchBox: React.FC<SearchBoxProps> = ({
 }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [isReportMode, setIsReportMode] = useState(false);
+  const [selectedCountries, setSelectedCountries] = useState<string[]>(["all"]);
+
+  const handleCountryToggle = (country: string) => {
+    if (country === "all") {
+      setSelectedCountries(["all"]);
+      return;
+    }
+
+    if (selectedCountries.includes("all")) {
+      setSelectedCountries([country]);
+      return;
+    }
+
+    const newSelectedCountries = [...selectedCountries];
+
+    if (newSelectedCountries.includes(country)) {
+      if (newSelectedCountries.length === 1) {
+        return;
+      }
+      const filtered = newSelectedCountries.filter((c) => c !== country);
+      setSelectedCountries(filtered);
+    } else {
+      setSelectedCountries([...newSelectedCountries, country]);
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!searchQuery.trim()) return;
 
-    // 보고서 모드가 활성화된 경우 검색어에 "보고서" 키워드 추가
     const finalQuery = isReportMode
       ? `${searchQuery} 상세 분석 보고서`
       : searchQuery;
 
-    await onSearch(finalQuery);
+    await onSearch(finalQuery, selectedCountries);
+  };
+
+  const CountryButton = ({
+    country,
+    label,
+  }: {
+    country: string;
+    label: string;
+  }) => {
+    const isSelected = selectedCountries.includes(country);
+    return (
+      <button
+        type="button"
+        onClick={() => handleCountryToggle(country)}
+        className={`px-4 py-2 rounded-md transition-colors ${
+          isSelected
+            ? "bg-blue-600 text-white"
+            : "bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"
+        }`}
+      >
+        {label}
+      </button>
+    );
   };
 
   return (
@@ -41,6 +88,18 @@ export const SearchBox: React.FC<SearchBoxProps> = ({
             className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             required
           />
+        </div>
+
+        <div className="flex flex-col gap-2 mb-4">
+          <div className="font-medium text-gray-700 dark:text-gray-300 mb-1">
+            뉴스 검색 국가:
+          </div>
+          <div className="flex flex-wrap gap-2">
+            <CountryButton country="all" label="모든 국가" />
+            <CountryButton country="kr" label="한국" />
+            <CountryButton country="us" label="미국" />
+            <CountryButton country="cn" label="중국" />
+          </div>
         </div>
 
         <div className="flex justify-between items-center">

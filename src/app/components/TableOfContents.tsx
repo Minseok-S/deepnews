@@ -160,7 +160,7 @@ export const TableOfContents: React.FC<TableOfContentsProps> = ({
             <li key={item.id} className="pl-1">
               <a
                 href={`#${item.id}`}
-                className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 hover:bg-blue-50 dark:hover:bg-blue-900/20 block py-2 px-3 rounded-lg transition-colors flex items-center gap-3"
+                className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 hover:bg-blue-50 dark:hover:bg-blue-900/20 block py-2 px-3 rounded-lg transition-colors items-center gap-3"
                 onClick={(e) => {
                   e.preventDefault();
                   const element = document.getElementById(item.id);

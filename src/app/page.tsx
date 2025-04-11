@@ -13,7 +13,7 @@ export default function Home() {
   const [error, setError] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState<string>("");
 
-  const handleSearch = async (query: string) => {
+  const handleSearch = async (query: string, countries: string[]) => {
     if (!query.trim()) return;
 
     setSearchQuery(query);
@@ -37,43 +37,43 @@ export default function Home() {
         ],
       });
 
-      let prompt = "";
       const currentDate = new Date().toISOString().split("T")[0];
 
-      // 일반 뉴스 요약 프롬프트
-      prompt = `다음 키워드와 관련된 최근 뉴스를 조사하고 주요 내용을 요약해주세요: ${query}
-        
-그라운딩 검색(Google Search)을 사용하여 해당 키워드에 대한 최신 뉴스와 정보를 검색해주세요.
-한국어와 영어로 두 가지 언어로 "${query}"를 검색하여 국내외 정보를 모두 포함해주세요.
-검색 결과는 최대한 ${currentDate} 날짜 기준 일주일 이내의 정보를 기준으로 정리해주세요.
-반드시 존재하는 뉴스 최소 10개 이상을 찾아서 정리해주세요.
+      // 환경 변수에서 프롬프트 가져오기
+      const promptTemplate = process.env.NEXT_PUBLIC_NEWS_PROMPT || "";
 
-## ✅ [${query} - 관련 최신 뉴스 요약] → id="report-title"
+      // 국가별 검색어 설정
+      let languageInstruction = "";
 
-### 주요 뉴스 헤드라인
-1. [첫 번째 주요 헤드라인] → id="headline-1" 
-2. [두 번째 주요 헤드라인] → id="headline-2"
-3. [세 번째 주요 헤드라인] → id="headline-3"
-4. [네 번째 주요 헤드라인] → id="headline-4"
-5. [다섯 번째 주요 헤드라인] → id="headline-5"
+      if (countries.includes("all")) {
+        languageInstruction =
+          '한국어와 영어로 두 가지 언어로 "{query}"를 검색하여 국내외 정보를 모두 포함해주세요.';
+      } else {
+        const languageMap: Record<string, string> = {
+          kr: '한국어로 "{query}"를 검색하여 한국 내 정보를 찾아주세요.',
+          us: '영어로 "{query}"를 검색하여 미국 내 정보를 찾아주세요.',
+          cn: '중국어로 "{query}"를 검색하여 중국 내 정보를 찾아주세요.',
+        };
 
-### 핵심 내용 요약
-* **[첫 번째 주요 헤드라인 내용]** [150자 이내 요약] → id="summary-1"
-* **[두 번째 주요 헤드라인 내용]** [150자 이내 요약] → id="summary-2"
-* **[세 번째 주요 헤드라인 내용]** [150자 이내 요약] → id="summary-3"
-* **[넷 번째 주요 헤드라인 내용]** [150자 이내 요약] → id="summary-4"
-* **[다섯 번째 주요 헤드라인 내용]** [150자 이내 요약] → id="summary-5"
+        const languageInstructions = countries
+          .map((country) => languageMap[country])
+          .filter(Boolean);
 
-### 전반적인 트렌드 분석
-* [${query}와 관련된 전반적인 트렌드를 500자 이내로 분석 후 *로 문단 구분하여 정리] → id="trend-analysis"
+        if (languageInstructions.length > 0) {
+          languageInstruction = languageInstructions.join(" 그리고 ");
+        } else {
+          languageInstruction =
+            '한국어와 영어로 두 가지 언어로 "{query}"를 검색하여 국내외 정보를 모두 포함해주세요.';
+        }
+      }
 
-## ✅ 참고 링크 → id="reference-links"
-* [발행일자] [뉴스 기사 제목/출처 및 실제 URL] → id="reference-link-1"
-* [발행일자] [뉴스 기사 제목/출처 및 실제 URL] → id="reference-link-2"
-* [발행일자] [뉴스 기사 제목/출처 및 실제 URL] → id="reference-link-3"
-* [발행일자] [뉴스 기사 제목/출처 및 실제 URL] → id="reference-link-4"
-* [발행일자] [뉴스 기사 제목/출처 및 실제 URL] → id="reference-link-5"
-`;
+      // 변수 치환하여 프롬프트 생성
+      const prompt = promptTemplate
+        .replace(/{query}/g, query)
+        .replace(/{currentDate}/g, currentDate)
+        .replace(/{languageInstruction}/g, languageInstruction);
+
+      console.log(prompt);
 
       const generationConfig = {
         temperature: 0,

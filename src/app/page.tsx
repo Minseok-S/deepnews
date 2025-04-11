@@ -46,8 +46,7 @@ export default function Home() {
 그라운딩 검색(Google Search)을 사용하여 해당 키워드에 대한 최신 뉴스와 정보를 검색해주세요.
 한국어와 영어로 두 가지 언어로 "${query}"를 검색하여 국내외 정보를 모두 포함해주세요.
 검색 결과는 최대한 ${currentDate} 날짜 기준 일주일 이내의 정보를 기준으로 정리해주세요.
-반드시 존재하는 뉴스를 찾아서 정리해주세요.
-유튜브는 제외해주세요.
+반드시 존재하는 뉴스 최소 10개 이상을 찾아서 정리해주세요.
 
 ## ✅ [${query} - 관련 최신 뉴스 요약] → id="report-title"
 
@@ -59,14 +58,14 @@ export default function Home() {
 5. [다섯 번째 주요 헤드라인] → id="headline-5"
 
 ### 핵심 내용 요약
-* **[첫 번째 주요 내용]** [100자 이내 요약] → id="summary-1"
-* **[두 번째 주요 내용]** [100자 이내 요약] → id="summary-2"
-* **[세 번째 주요 내용]** [100자 이내 요약] → id="summary-3"
-* **[넷 번째 주요 내용]** [100자 이내 요약] → id="summary-4"
-* **[다섯 번째 주요 내용]** [100자 이내 요약] → id="summary-5"
+* **[첫 번째 주요 헤드라인 내용]** [150자 이내 요약] → id="summary-1"
+* **[두 번째 주요 헤드라인 내용]** [150자 이내 요약] → id="summary-2"
+* **[세 번째 주요 헤드라인 내용]** [150자 이내 요약] → id="summary-3"
+* **[넷 번째 주요 헤드라인 내용]** [150자 이내 요약] → id="summary-4"
+* **[다섯 번째 주요 헤드라인 내용]** [150자 이내 요약] → id="summary-5"
 
 ### 전반적인 트렌드 분석
-* [${query}와 관련된 전반적인 트렌드를 500자 이내로 분석 후 문단 구분하여 정리] → id="trend-analysis"
+* [${query}와 관련된 전반적인 트렌드를 500자 이내로 분석 후 *로 문단 구분하여 정리] → id="trend-analysis"
 
 ## ✅ 참고 링크 → id="reference-links"
 * [발행일자] [뉴스 기사 제목/출처 및 실제 URL] → id="reference-link-1"
@@ -76,10 +75,8 @@ export default function Home() {
 * [발행일자] [뉴스 기사 제목/출처 및 실제 URL] → id="reference-link-5"
 `;
 
-      console.log(prompt);
-
       const generationConfig = {
-        temperature: 0.2,
+        temperature: 0,
         maxOutputTokens: 8192,
       };
 

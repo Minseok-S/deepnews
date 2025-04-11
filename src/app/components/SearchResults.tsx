@@ -23,17 +23,64 @@ export const SearchResults: React.FC<SearchResultsProps> = ({ results }) => {
       return idMatch ? idMatch[1] : "";
     };
 
+    // 텍스트 전처리 함수 - ID 패턴을 제거하고 정제된 텍스트 반환
+    const preprocessText = (rawText: string) => {
+      // 줄 단위로 처리
+      return rawText
+        .split("\n")
+        .map((line) => {
+          // ID 패턴이 포함된 줄 처리
+          if (
+            line.includes("id=") ||
+            line.includes("→") ||
+            line.includes("(id")
+          ) {
+            // 모든 ID 패턴 제거
+            return line
+              .replace(/ \(id="[^"]*"\)/g, "") // (id="...")
+              .replace(/\*\*\(id="[^"]*"\)\*\*/g, "") // **(id="...")**
+              .replace(/\(id="[^"]*"\)/g, "") // (id="...")
+              .replace(/ → id="[^"]*"/g, "") // → id="..."
+              .replace(/→ id="[^"]*"/g, "") // →id="..."
+              .replace(/ →id="[^"]*"/g, "") // → id="..."
+              .replace(/→id="[^"]*"/g, "") // →id="..."
+              .replace(/ → id='[^']*'/g, "") // → id='...'
+              .replace(/→ id='[^']*'/g, "") // →id='...'
+              .replace(/ →id='[^']*'/g, "") // → id='...'
+              .replace(/→id='[^']*'/g, "") // →id='...'
+              .replace(/ → id=[^ \n]*/g, "") // → id=...
+              .replace(/→ id=[^ \n]*/g, "") // →id=...
+              .replace(/ →id=[^ \n]*/g, "") // → id=...
+              .replace(/→id=[^ \n]*/g, ""); // →id=...
+          }
+          return line;
+        })
+        .join("\n");
+    };
+
+    // 전처리된 내용
+    const preprocessedContent = preprocessText(content);
+
     // ID 표시 문자열 제거 (전체 내용에서 공통 적용)
-    let formattedContent = content
+    let formattedContent = preprocessedContent
+      // 모든 ID 태그 패턴 제거
       .replace(/ \(id="[^"]*"\)/g, "") // (id="...") 패턴 제거
       .replace(/\*\*\(id="[^"]*"\)\*\*/g, "") // **(id="...")**
       .replace(/ \*\*\(id="[^"]*"\)\*\*/g, "") // **(id="...")**
       .replace(/\(id="[^"]*"\)/g, "") // 모든 (id="...") 패턴 제거
       .replace(/ →\s*id="[^"]*"/g, "") // → id="..."
+      .replace(/→\s*id="[^"]*"/g, "") // →id="..." (공백 없는 경우)
       .replace(/ →\s*id='[^']*'/g, "") // → id='...'
+      .replace(/→\s*id='[^']*'/g, "") // →id='...' (공백 없는 경우)
       .replace(/ →\s*id=[^ ]*/g, "") // → id=... (따옴표 없는 경우)
+      .replace(/→\s*id=[^ ]*/g, "") // →id=... (공백 없는 경우)
       .replace(/\s*\* id="[^"]*"/g, "") // * id="..." 패턴 추가
-      .replace(/ \(id=[^)]*\)/g, ""); // (id=...) 패턴 제거
+      .replace(/ \(id=[^)]*\)/g, "") // (id=...) 패턴 제거
+      // 모든 줄 끝 ID 패턴 처리
+      .replace(/ → id="[^"]*"$/gm, "") // 줄 끝의 → id="..."
+      .replace(/→ id="[^"]*"$/gm, "") // 줄 끝의 →id="..."
+      .replace(/ →id="[^"]*"$/gm, "") // 줄 끝의 → id="..."
+      .replace(/→id="[^"]*"$/gm, ""); // 줄 끝의 →id="..."
 
     // 기본 형식 처리 (## ✅ 형식)
     if (content.includes("## ✅")) {
@@ -159,11 +206,124 @@ export const SearchResults: React.FC<SearchResultsProps> = ({ results }) => {
             return `<div ${
               id ? `id="${id}"` : ""
             } class="p-4 border-l-4 border-blue-500 dark:border-blue-600 bg-blue-50 dark:bg-blue-900/20 rounded-r-lg my-4">
-                <p class="text-gray-700 dark:text-gray-300 leading-relaxed">${content}</p>
+                <p class="text-gray-700 dark:text-gray-300 leading-relaxed text-justify">${content}</p>
               </div>`;
           }
           return `<p class="mb-3">${content}</p>`;
         })
+
+        // 트렌드 분석에 대한 단락 처리 개선
+        .replace(/^(최근 미국 관세 정책은.*?)$/gm, (match, content) => {
+          const id = extractId(match);
+          if (trendSection && trendSection[0].includes(match)) {
+            return `<div ${
+              id ? `id="${id}"` : ""
+            } class="p-4 border-l-4 border-blue-500 dark:border-blue-600 bg-blue-50 dark:bg-blue-900/20 rounded-r-lg my-4">
+                <p class="text-gray-700 dark:text-gray-300 leading-relaxed text-justify">${content}</p>
+              </div>`;
+          }
+          return `<p class="mb-3">${content}</p>`;
+        })
+
+        // 트렌드 분석 단락들을 구조화
+        .replace(/^(반면, 중국을 제외한.*?)$/gm, (match, content) => {
+          const id = extractId(match);
+          if (trendSection && trendSection[0].includes(match)) {
+            return `<div ${
+              id ? `id="${id}"` : ""
+            } class="p-4 border-l-4 border-green-500 dark:border-green-600 bg-green-50 dark:bg-green-900/20 rounded-r-lg my-4">
+                <p class="text-gray-700 dark:text-gray-300 leading-relaxed text-justify">${content}</p>
+              </div>`;
+          }
+          return `<p class="mb-3">${content}</p>`;
+        })
+
+        // 트렌드 분석 마지막 단락 처리
+        .replace(/^(이러한 미국의 급격한 관세.*?)$/gm, (match, content) => {
+          const id = extractId(match);
+          if (trendSection && trendSection[0].includes(match)) {
+            return `<div ${
+              id ? `id="${id}"` : ""
+            } class="p-4 border-l-4 border-purple-500 dark:border-purple-600 bg-purple-50 dark:bg-purple-900/20 rounded-r-lg my-4">
+                <p class="text-gray-700 dark:text-gray-300 leading-relaxed text-justify">${content}</p>
+              </div>`;
+          }
+          return `<p class="mb-3">${content}</p>`;
+        })
+
+        // 트렌드 분석 섹션 전체를 감싸는 컨테이너 추가
+        .replace(
+          /<h3([^>]*)>([^<]*전반적인 트렌드 분석[^<]*)<\/h3>([\s\S]*?)(?=<h3|$)/g,
+          (match, attrs, title, content) => {
+            // ID 태그만 있는 줄 제거 (더 강력한 패턴)
+            let processedContent = content
+              .replace(/<p[^>]*>[^<]*→\s*id="[^"]*"[^<]*<\/p>\s*/m, "")
+              .replace(/<p[^>]*>\s*\(id="[^"]*"\)\s*<\/p>\s*/m, "");
+
+            // 트렌드 분석 텍스트 내용을 추출
+            const paragraphs = [];
+            if (trendSection) {
+              // ID 및 불필요한 태그 제거 후 단락으로 분리
+              const cleanContent = trendSection[0]
+                .replace(/### 전반적인 트렌드 분석[\s\n]*/g, "")
+                .replace(/→\s*id="[^"]*"[\s\n]*/g, "")
+                .replace(/\(id="[^"]*"\)[\s\n]*/g, "")
+                .trim();
+
+              // 여러 구분자로 단락 분리
+              let splitParagraphs: string[] = [];
+
+              // 우선 빈 줄과 ₩ 문자로 분리
+              const initialSplit = cleanContent
+                .split(/\n\s*\n|\n₩\n|\n\s*₩\s*\n/)
+                .map((p) => p.trim());
+
+              // 각 부분에서 단일 ₩ 문자로도 추가 분리
+              initialSplit.forEach((part) => {
+                if (part.includes("₩")) {
+                  // ₩ 문자로 추가 분리
+                  splitParagraphs.push(...part.split(/₩/).map((p) => p.trim()));
+                } else {
+                  splitParagraphs.push(part);
+                }
+              });
+
+              // 글머리 기호 제거 및 빈 줄 필터링
+              paragraphs.push(
+                ...splitParagraphs
+                  .map((p) => p.replace(/^\s*\*\s*/, "")) // 글머리 기호(*) 제거
+                  .filter((p) => p.trim())
+              );
+            }
+
+            // 단락이 있으면 스타일 적용
+            if (paragraphs.length > 0) {
+              const colorClasses = [
+                "border-blue-500 dark:border-blue-600 bg-blue-50 dark:bg-blue-900/20",
+                "border-green-500 dark:border-green-600 bg-green-50 dark:bg-green-900/20",
+                "border-purple-500 dark:border-purple-600 bg-purple-50 dark:bg-purple-900/20",
+                "border-amber-500 dark:border-amber-600 bg-amber-50 dark:bg-amber-900/20",
+              ];
+
+              processedContent = '<div class="space-y-4 my-4">';
+              paragraphs.forEach((para, index) => {
+                if (para.trim()) {
+                  const colorClass = colorClasses[index % colorClasses.length];
+                  processedContent += `
+                    <div class="p-4 border-l-4 ${colorClass} rounded-r-lg">
+                      <p class="text-gray-700 dark:text-gray-300 leading-relaxed text-justify">${para}</p>
+                    </div>`;
+                }
+              });
+              processedContent += "</div>";
+            }
+
+            return `<h3${attrs}>${title}</h3>
+              <div class="bg-gray-50 dark:bg-gray-900/30 rounded-xl p-4 mb-6">
+                ${processedContent}
+              </div>`;
+          }
+        )
 
         // 나머지 굵은 텍스트 처리
         .replace(
@@ -214,7 +374,7 @@ export const SearchResults: React.FC<SearchResultsProps> = ({ results }) => {
 
         <div className="bg-white dark:bg-gray-800 shadow-lg rounded-xl p-8 overflow-auto print:shadow-none transition-all duration-200 hover:shadow-xl border border-gray-100 dark:border-gray-700">
           <div
-            className="prose dark:prose-invert max-w-none prose-headings:font-display prose-p:leading-relaxed"
+            className="prose dark:prose-invert max-w-none prose-headings:font-display prose-p:leading-relaxed prose-p:text-justify"
             dangerouslySetInnerHTML={{ __html: htmlContent }}
           />
 
@@ -254,9 +414,12 @@ export const SearchResults: React.FC<SearchResultsProps> = ({ results }) => {
       <h2 className="text-2xl font-bold mb-6 text-gray-800 dark:text-white border-b pb-3 border-gray-200 dark:border-gray-700">
         검색 결과
       </h2>
-      <div className="prose dark:prose-invert max-w-none prose-p:leading-relaxed">
+      <div className="prose dark:prose-invert max-w-none prose-p:leading-relaxed prose-p:text-justify">
         {results.split("\n").map((line, index) => (
-          <p key={index} className="mb-3 text-gray-700 dark:text-gray-300">
+          <p
+            key={index}
+            className="mb-3 text-gray-700 dark:text-gray-300 text-justify"
+          >
             {line}
           </p>
         ))}

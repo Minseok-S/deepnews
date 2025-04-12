@@ -18,26 +18,28 @@ export const SearchBox: React.FC<SearchBoxProps> = ({
 }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCountries, setSelectedCountries] = useState<string[]>(["all"]);
-  const [startDate, setStartDate] = useState<string>(
-    new Date().toISOString().split("T")[0]
-  );
-  const [endDate, setEndDate] = useState<string>(
-    new Date().toISOString().split("T")[0]
-  );
+  const [startDate, setStartDate] = useState<string>(getKoreanDate(new Date()));
+  const [endDate, setEndDate] = useState<string>(getKoreanDate(new Date()));
   const [newsCount, setNewsCount] = useState<number>(10);
   const [activeDateRange, setActiveDateRange] = useState<
     "today" | "week" | "month" | "year" | "custom"
   >("today");
 
-  // 오늘 날짜
+  // 한국 시간 기준으로 날짜 문자열 반환
+  function getKoreanDate(date: Date): string {
+    const koreaTime = new Date(date.getTime() + 9 * 60 * 60 * 1000);
+    return koreaTime.toISOString().split("T")[0];
+  }
+
+  // 오늘 날짜 (한국 시간 기준)
   const getMaxDate = () => {
-    return new Date().toISOString().split("T")[0];
+    return getKoreanDate(new Date());
   };
 
   // 간편 날짜 설정 함수
   const setDateRange = (range: "today" | "week" | "month" | "year") => {
     const today = new Date();
-    const endDateStr = today.toISOString().split("T")[0];
+    const endDateStr = getKoreanDate(today);
 
     const startDateObj = new Date(today);
 
@@ -59,7 +61,7 @@ export const SearchBox: React.FC<SearchBoxProps> = ({
         break;
     }
 
-    const startDateStr = startDateObj.toISOString().split("T")[0];
+    const startDateStr = getKoreanDate(startDateObj);
 
     setStartDate(startDateStr);
     setEndDate(endDateStr);

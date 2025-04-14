@@ -203,7 +203,6 @@ export const SearchBox: React.FC<SearchBoxProps> = ({
               <input
                 type="date"
                 value={startDate}
-                max={getMaxDate()}
                 onChange={(e) => handleDateChange(e.target.value, "start")}
                 className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
@@ -215,8 +214,6 @@ export const SearchBox: React.FC<SearchBoxProps> = ({
               <input
                 type="date"
                 value={endDate}
-                min={startDate}
-                max={getMaxDate()}
                 onChange={(e) => handleDateChange(e.target.value, "end")}
                 className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               />

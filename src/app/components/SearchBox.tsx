@@ -31,11 +31,6 @@ export const SearchBox: React.FC<SearchBoxProps> = ({
     return koreaTime.toISOString().split("T")[0];
   }
 
-  // 오늘 날짜 (한국 시간 기준)
-  const getMaxDate = () => {
-    return getKoreanDate(new Date());
-  };
-
   // 간편 날짜 설정 함수
   const setDateRange = (range: "today" | "week" | "month" | "year") => {
     const today = new Date();
